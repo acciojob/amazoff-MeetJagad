@@ -9,13 +9,13 @@ import java.util.ListIterator;
 
 @Repository
 public class OrderRepository {
-    HashMap<String, Order> orderdatabase =new HashMap<>();
+    HashMap<String, Order>orderdb=new HashMap<>();
     HashMap<String, DeliveryPartner> deliveryPartenerdb =new HashMap<>();
     HashMap<String, List<String>> orderToPartenerdb=new HashMap<>();
     HashMap<String, String> orderAssigneddb=new HashMap<>();
 
     public String addOrder(Order order){
-        orderdatabase.put(order.getId(), order);
+        orderdb.put(order.getId(), order);
         return "added successfully";
     }
     public String addOrderPartenerPair(String orderid, String deliveryPartenerid){
@@ -29,9 +29,9 @@ public class OrderRepository {
 
     }
     public Order getOrderById(String orderId) {
-        for (String s : orderdatabase.keySet()) {
+        for (String s : orderdb.keySet()) {
             if (s.equals(orderId)) {
-                return orderdatabase.get(s);
+                return orderdb.get(s);
             }
         }
         return null;
@@ -52,13 +52,13 @@ public class OrderRepository {
     }
     public List<String> getAllOrders() {
         List<String> orders = new ArrayList<>();
-        for (String s : orderdatabase.keySet()) {
+        for (String s : orderdb.keySet()) {
             orders.add(s);
         }
         return orders;
     }
     public int getCountOfUnassignedOrders() {
-        int countOfOrders = orderdatabase.size() - orderAssigneddb.size();
+        int countOfOrders = orderdb.size() - orderAssigneddb.size();
         return countOfOrders;
     }
     public int getOrdersLeftAfterGivenTimeByPartnerId(String time, String deliveryPartnerId) {
@@ -66,7 +66,7 @@ public class OrderRepository {
         List<String> list = orderToPartenerdb.get(deliveryPartnerId);
         int deliveryTime = Integer.parseInt(time.substring(0, 2)) * 60 + Integer.parseInt(time.substring(3));
         for (String s : list) {
-            Order order = orderdatabase.get(s);
+            Order order = orderdb.get(s);
             if (order.getDeliveryTime() > deliveryTime) {
                 countOfOrders++;
             }
@@ -78,7 +78,7 @@ public class OrderRepository {
         List<String> list = orderToPartenerdb.get(deliveryPartnerId);
         int deliveryTime = 0;
         for (String s : list) {
-            Order order = orderdatabase.get(s);
+            Order order = orderdb.get(s);
             deliveryTime = Math.max(deliveryTime, order.getDeliveryTime());
         }
         int hour = deliveryTime / 60;
@@ -110,7 +110,7 @@ public class OrderRepository {
         return "Deleted Successfully";
     }
     public String deleteOrderById(String orderId) {
-        orderdatabase.remove(orderId);
+        orderdb.remove(orderId);
         String partnerId = orderAssigneddb.get(orderId);
         orderAssigneddb.remove(orderId);
         List<String> list = orderToPartenerdb.get(partnerId);
