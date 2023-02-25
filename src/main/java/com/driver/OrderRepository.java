@@ -1,21 +1,24 @@
 package com.driver;
 
+
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 @Repository
 public class OrderRepository {
-    HashMap<String, Order>orderdb=new HashMap<>();
-    HashMap<String, DeliveryPartner> deliveryPartenerdb =new HashMap<>();
-    HashMap<String, List<String>> orderToPartenerdb=new HashMap<>();
-    HashMap<String, String> orderAssigneddb=new HashMap<>();
+    HashMap<String, Order> orderdb = new HashMap<>();
+    HashMap<String, DeliveryPartner> deliveryPartenerdb = new HashMap<>();
+    HashMap<String, List<String>> orderToPartenerdb = new HashMap<>();
+    HashMap<String, String> orderAssigneddb = new HashMap<>();
 
     public String addOrder(Order order){
         orderdb.put(order.getId(), order);
+        return "added successfully";
+    }
+    public String addDeliveryPartener(String deliveryPartenerId){
+        DeliveryPartner deliveryPartner = new DeliveryPartner(deliveryPartenerId);
+        deliveryPartenerdb.put(deliveryPartenerId, deliveryPartner);
         return "added successfully";
     }
     public String addOrderPartenerPair(String orderid, String deliveryPartenerid){
@@ -123,9 +126,5 @@ public class OrderRepository {
         }
         orderToPartenerdb.put(partnerId, list);
         return "Deleted Successfully";
-    }
-
-    public String addDeliveryPartener(String deliveryPartnerId) {
-        return deliveryPartnerId;
     }
 }
